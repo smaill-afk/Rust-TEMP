@@ -1,160 +1,215 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <title>RUST AUTH</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LACMI VAPE SHOP | Наявність</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #050a14;
+            --accent-cyan: #00f2ff;
+            --accent-purple: #bc13fe;
+            --text-color: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.04);
+        }
 
-  <style>
-    * { box-sizing: border-box; font-family: Arial, sans-serif; }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Roboto', sans-serif;
+            overflow-x: hidden;
+        }
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: radial-gradient(circle at top, #3a3a3a, #0f0f0f 70%);
-      color: #e6e6e6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+        /* Анімований фон */
+        .gradient-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: linear-gradient(45deg, #050a14, #151b2b, #0a0514, #050a14);
+            background-size: 400% 400%;
+            animation: gradientMove 12s ease infinite;
+        }
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-    .auth-box {
-      width: 360px;
-      background: #1b1b1b;
-      border: 2px solid #c97a2b;
-      border-radius: 6px;
-      padding: 24px;
-      box-shadow: 0 0 25px rgba(201,122,43,.25);
-    }
+        .hero {
+            height: 40vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 20px;
+        }
 
-    .title {
-      text-align: center;
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      color: #ff9f3a;
-      margin-bottom: 20px;
-    }
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 10vw, 4.5rem);
+            color: var(--accent-cyan);
+            text-shadow: 0 0 20px var(--accent-cyan);
+            margin: 0;
+            letter-spacing: 5px;
+        }
 
-    label {
-      font-size: 13px;
-      color: #ccc;
-    }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px 100px; }
 
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 6px 0 14px;
-      background: #0f0f0f;
-      border: 1px solid #444;
-      border-radius: 4px;
-      color: #fff;
-    }
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-purple);
+            border-left: 4px solid var(--accent-cyan);
+            padding-left: 15px;
+            margin: 40px 0 20px;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+        }
 
-    button {
-      width: 100%;
-      padding: 12px;
-      background: linear-gradient(#ffb14a, #c97a2b);
-      border: none;
-      border-radius: 4px;
-      font-weight: 700;
-      cursor: pointer;
-    }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
 
-    .switch {
-      margin-top: 14px;
-      text-align: center;
-      font-size: 13px;
-      color: #aaa;
-      cursor: pointer;
-    }
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            transition: 0.3s;
+        }
+        .card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.15);
+        }
 
-    .error {
-      color: #ff4a4a;
-      font-size: 13px;
-      margin-bottom: 10px;
-      display: none;
-    }
-  </style>
+        .card h3 {
+            margin-top: 0; color: var(--accent-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .flavor-list { list-style: none; padding: 0; margin: 0; }
+        .flavor-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            display: flex; align-items: center;
+            font-size: 1rem;
+        }
+        .flavor-list li:last-child { border: none; }
+
+        /* Фіксована кнопка замовлення */
+        .order-btn {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 400px;
+            background: linear-gradient(90deg, var(--accent-purple), #8a2be2);
+            color: white; text-align: center; padding: 18px;
+            border-radius: 50px; text-decoration: none; font-weight: bold;
+            font-family: 'Orbitron', sans-serif; z-index: 1000;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            transition: 0.3s;
+        }
+        .order-btn:hover { transform: translateX(-50%) scale(1.05); filter: brightness(1.2); }
+
+        @media (max-width: 600px) {
+            .hero { height: 30vh; }
+            .section-title { font-size: 1.1rem; }
+        }
+    </style>
 </head>
-
 <body>
-  <div class="auth-box">
-    <div class="title" id="title">RUST</div>
 
-    <div class="error" id="error"></div>
+    <div class="gradient-bg"></div>
 
-    <label>Email</label>
-    <input type="email" id="email">
+    <section class="hero">
+        <h1 class="logo-text animate__animated animate__zoomIn">LACMI</h1>
+        <p class="animate__animated animate__fadeIn animate__delay-1s">📦 АКТУАЛЬНА НАЯВНІСТЬ ТОВАРУ</p>
+    </section>
 
-    <label>Пароль</label>
-    <input type="password" id="password">
+    <div class="container">
+        
+        <h2 class="section-title">Chaser Specials</h2>
+        <div class="grid">
+            <div class="card animate__animated animate__fadeInUp">
+                <h3>🎄 Chaser Різдвяний (30ml)</h3>
+                <ul class="flavor-list">
+                    <li>🎃 Гарбузовий Лате</li>
+                </ul>
+            </div>
+            <div class="card animate__animated animate__fadeInUp">
+                <h3>🍏 Chaser Black (30ml)</h3>
+                <ul class="flavor-list">
+                    <li>🍏 Потрійне кисле яблуко</li>
+                </ul>
+            </div>
+        </div>
 
-    <button id="btn" onclick="auth()">УВІЙТИ</button>
+        <h2 class="section-title">Chaser Classic Line</h2>
+        <div class="grid">
+            <div class="card animate__animated animate__fadeInUp">
+                <h3>💧 Chaser 10ml</h3>
+                <ul class="flavor-list">
+                    <li>🥝 Ківі</li>
+                    <li>🍋 Лимон</li>
+                    <li>🌿 Мʼята</li>
+                    <li>🍇🧊 Смородина ментол</li>
+                    <li>🧊 Чорниця ментол</li>
+                    <li>🍓 Ягоди</li>
+                    <li>🍓 Суниця</li>
+                </ul>
+            </div>
+            <div class="card animate__animated animate__fadeInUp">
+                <h3>☁️ For Pods 30ml (50mg)</h3>
+                <ul class="flavor-list">
+                    <li>🍎 Гранат</li>
+                    <li>🟡 Жовта малина</li>
+                    <li>🔴 Порічка</li>
+                    <li>🍈 Диня</li>
+                </ul>
+            </div>
+        </div>
 
-    <div class="switch" id="switch" onclick="toggleMode()">
-      Don't have acoount? Register
+        <h2 class="section-title">Chaser Mix & Mint</h2>
+        <div class="grid">
+            <div class="card animate__animated animate__fadeInUp">
+                <h3>🌪️ Chaser Mix 30ml (50/65mg)</h3>
+                <ul class="flavor-list">
+                    <li>🌿 Базилік мʼята</li>
+                    <li>🍌 Банановий пунш</li>
+                    <li>🥤 Кола</li>
+                    <li>🥃 Ром кола</li>
+                </ul>
+            </div>
+            <div class="card animate__animated animate__fadeInUp">
+                <h3>🍃 Chaser My Mint 30ml</h3>
+                <ul class="flavor-list">
+                    <li>🔵🌿 Чорниця мʼята</li>
+                    <li>🍒 Журавлина мʼята</li>
+                    <li>🌿 Солодка мʼята</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2 class="section-title">Premium Phantom</h2>
+        <div class="grid">
+            <div class="card animate__animated animate__fadeInUp">
+                <h3>👻 PHANTOM 30ml</h3>
+                <ul class="flavor-list">
+                    <li>🍉 Кавун</li>
+                    <li>🌿 Мʼята</li>
+                    <li>🍒 Вишня ментол</li>
+                    <li>🥤 Кавун мʼята</li>
+                </ul>
+            </div>
+        </div>
+
+        <p style="text-align: center; margin-top: 40px; opacity: 0.6;">🚚 Відправка по всій Україні Новою Поштою</p>
     </div>
-  </div>
 
-  <script>
-    let mode = 'login';
+    <a href="https://t.me/Lacmivapeshop" class="order-btn">ОФОРМИТИ ЗАМОВЛЕННЯ ⚡</a>
 
-    function toggleMode() {
-      const btn = document.getElementById('btn');
-      const sw = document.getElementById('switch');
-      const title = document.getElementById('title');
-      document.getElementById('error').style.display = 'none';
-
-      if (mode === 'login') {
-        mode = 'register';
-        btn.textContent = 'Register';
-        sw.textContent = 'Have account? Login';
-        title.textContent = 'RUST REG';
-      } else {
-        mode = 'login';
-        btn.textContent = 'Login';
-        sw.textContent = 'Register';
-        title.textContent = 'RUST';
-      }
-    }
-
-    function auth() {
-      const email = document.getElementById('email').value.trim();
-      const pass = document.getElementById('password').value.trim();
-      const error = document.getElementById('error');
-
-      if (!email || !pass) {
-        error.textContent = 'Заповни всі поля';
-        error.style.display = 'block';
-        return;
-      }
-
-      const key = 'user_' + email;
-
-      if (mode === 'register') {
-        if (localStorage.getItem(key)) {
-          error.textContent = 'Акаунт вже існує';
-          error.style.display = 'block';
-          return;
-        }
-        localStorage.setItem(key, pass);
-        alert('Реєстрація успішна');
-        toggleMode();
-      } else {
-        if (localStorage.getItem(key) !== pass) {
-          error.textContent = 'Невірний email або пароль';
-          error.style.display = 'block';
-          return;
-        }
-
-        // 🔒 авторизація
-        localStorage.setItem('logged_in', 'true');
-        localStorage.setItem('current_user', email);
-
-        window.location.href = 'main.html';
-      }
-    }
-  </script>
 </body>
 </html>
